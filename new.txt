@@ -1,0 +1,33 @@
+property
+  id type address squarefeet image price 
+  cityid stateid
+client
+  id name email phone address password
+  agentid branchid
+agent
+  id name email phone address password licence
+  branchid
+state
+  id name 
+city
+  id name
+  stateid branchid
+contact
+  id phone email 
+  clientid propetyownerid
+feedback
+  id rating date
+  clientid agentid
+property_owner
+  id name phone 
+  propetyid agentid clientid
+roles
+  id admin branch_manager property_owner agent
+appointment
+  id date time
+  propertyid clientid agentid
+admin
+id name email address password number
+branch
+ id name address manager
+ cityid stateid
