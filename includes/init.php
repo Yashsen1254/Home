@@ -5,7 +5,7 @@ define("BASE_URL", "/home");
 
 date_default_timezone_set('Asia/Kolkata');
 
-$connection = new PDO("mysql:host=localhost;port=3306;dbname=FreshFusion", "root", "");
+$connection = new PDO("mysql:host=localhost;port=3306;dbname=home", "root", "");
 
 function pathOf($path)
 {

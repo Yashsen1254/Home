@@ -22,11 +22,11 @@
 </head>
 <body class="theme-purple">
 <!-- Page Loader -->
-<div class="page-loader-wrapper">
+<!-- <div class="page-loader-wrapper">
     <div class="loader">
         <div class="m-t-30"><img class="zmdi-hc-spin" src="https://thememakker.com/templates/oreo/realestate/html/assets/images/logo.svg" width="48" height="48" alt="Oreo"></div>
         <p>Please wait...</p>        
     </div>
-</div>
+</div> -->
 <!-- Overlay For Sidebars -->
 <div class="overlay"></div>
