@@ -3,6 +3,8 @@ require '../../includes/init.php';
 require '../../includes/header.php';
 require '../../includes/navbar.php';
 require '../../includes/sidebar.php';
+$Id = $_POST["Id"];
+$role = selectOne("SELECT * FROM role WHERE Id = $Id");
 ?>
 
 <aside id="rightsidebar" class="right-sidebar">
@@ -506,13 +508,13 @@ require '../../includes/sidebar.php';
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
-
                     <div class="body">
+                        <input class="form-control" type="hidden" id="Id" name="Id" value="<?= $role['Id'] ?>">
                         <h2 class="card-inside-title">Name</h2>
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Name" />
+                                    <input type="text" class="form-control" id="Name" placeholder="Name" />
                                 </div>
                             </div>
                         </div>
@@ -523,7 +525,7 @@ require '../../includes/sidebar.php';
         <!-- #END# Input -->
 
         <div class="col-sm-12">
-            <button type="submit" class="btn btn-primary btn-round">Add</button>
+            <button onclick="updateData()" class="btn btn-primary btn-round">Add</button>
             <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
         </div>
     </div>
@@ -531,5 +533,26 @@ require '../../includes/sidebar.php';
 
 <?php
 include '../../includes/script.php';
+?>
+<script>
+    function updateData() {
+        var Id = $("#Id").val();
+        var Name = $("#Name").val();
+
+        $.ajax({
+            url: "../../api/role/update.php",
+            method: "POST",
+            data: {
+                Id: Id,
+                Name: Name
+            },
+            success: function (response) {
+                alert("Role Updated");
+                window.location.href = './index.php';
+            }
+        })
+    }
+</script>
+<?php
 include '../../includes/pageend.php';
 ?>
