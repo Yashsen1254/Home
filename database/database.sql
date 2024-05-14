@@ -5,7 +5,7 @@ CREATE DATABASE `Home`;
 USE `Home`;
 
 CREATE TABLE
-    `Roles` (
+    `Role` (
         `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `Name` VARCHAR(255) NOT NULL
     );
@@ -40,7 +40,9 @@ CREATE TABLE
         `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `Name` VARCHAR(255) NOT NULL,
         `StateId` INT NOT NULL,
-        `BranchId` INT NOT NULL FOREIGN KEY (`StateId`) REFERENCES `State` (`Id`) FOREIGN KEY (`BranchId`) REFERENCES `Branch` (`Id`)
+        `BranchId` INT NOT NULL,
+         FOREIGN KEY (`StateId`) REFERENCES `State` (`Id`),
+          FOREIGN KEY (`BranchId`) REFERENCES `Branch` (`Id`)
     );
 
 CREATE TABLE
@@ -62,7 +64,7 @@ CREATE TABLE
         `Name` VARCHAR(255) NOT NULL,
         `Email` VARCHAR(255) NOT NULL,
         `Phone` VARCHAR(255) NOT NULL,
-        `Address` VARCHAR(255) NOT NULL,
+        `Address` VARCHAR(255) NOT NULL
     );
 
 CREATE TABLE
@@ -70,7 +72,7 @@ CREATE TABLE
         `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `Name` VARCHAR(255) NOT NULL,
         `Email` VARCHAR(255) NOT NULL,
-        `Phone` VARCHAR(255) NOT NULL,
+        `Phone` VARCHAR(255) NOT NULL
     );
 
 CREATE TABLE
