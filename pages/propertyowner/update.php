@@ -510,7 +510,7 @@ $propertyOwners = selectOne("SELECT * FROM propertyowner WHERE Id = $Id");
                 <div class="card">
 
                     <div class="body">
-                    <input type="text" value="<?= $propertyOwners['Id'] ?>" id="Id"/>
+                    <input type="hidden" value="<?= $propertyOwners['Id'] ?>" id="Id"/>
                         <h2 class="card-inside-title">Name</h2>
                         <div class="row clearfix">
                             <div class="col-sm-12">

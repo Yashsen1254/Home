@@ -3,6 +3,8 @@ require '../../includes/init.php';
 include '../../includes/header.php';
 include '../../includes/navbar.php';
 include '../../includes/sidebar.php';
+$Id = $_POST['Id'];
+$clients = selectOne("SELECT * FROM client WHERE Id = $Id");
 ?>
 
 <aside id="rightsidebar" class="right-sidebar">
@@ -536,84 +538,41 @@ include '../../includes/sidebar.php';
                         </ul>
                     </div>
                     <div class="body">
+                    <input type="hidden" value="<?= $clients['Id'] ?>" id="Id"/>
+                    <h2 class="card-inside-title">Name</h2>
                         <div class="row clearfix">
-                            <div class="col-sm-4">
+                            <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Name">
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Phone No.">
-                                </div>
-                            </div>
-                            
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Address">
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="Password">
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Enter Your Email">
+                                    <input type="text" class="form-control" placeholder="Name" id="Name"/>
                                 </div>
                             </div>
                         </div>
+                        <h2 class="card-inside-title">Phone</h2>
                         <div class="row clearfix">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div class="card">
-                                    <div class="header">
-                                        <h2> <strong>Select Agent</strong> </h2>
-                                    </div>
-                                    <div class="body">
-                                        <div class="row clearfix">
-                                            <div class="col-sm-6">
-                                                <select class="form-control show-tick">
-                                                    <option value="">-- Please select --</option>
-                                                    <option value="10">10</option>
-                                                    <option value="20">20</option>
-                                                    <option value="30">30</option>
-                                                    <option value="40">40</option>
-                                                    <option value="50">50</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="number" class="form-control" placeholder="Number" id="Phone"/>
                                 </div>
                             </div>
                         </div>
-                        <!-- #END# Select -->
+                        <h2 class="card-inside-title">Email</h2>
                         <div class="row clearfix">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div class="card">
-                                    <div class="header">
-                                        <h2> <strong>Select Branch</strong> </h2>
-                                    </div>
-                                    <div class="body">
-                                        <div class="row clearfix">
-                                            <div class="col-sm-6">
-                                                <select class="form-control show-tick">
-                                                    <option value="">-- Please select --</option>
-                                                    <option value="10">10</option>
-                                                    <option value="20">20</option>
-                                                    <option value="30">30</option>
-                                                    <option value="40">40</option>
-                                                    <option value="50">50</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="email" class="form-control" placeholder="Number" id="Email"/>
                                 </div>
                             </div>
                         </div>
-                        <!-- #END# Select --> 
+                        <h2 class="card-inside-title">Address</h2>
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Address" id="Address"/>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-sm-12 mt-4">
-                            <button type="submit" class="btn btn-primary btn-round">Submit</button>
+                            <button type="submit" onclick="updateData()" class="btn btn-primary btn-round">Submit</button>
                             <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
                         </div>
                     </div>
@@ -625,5 +584,32 @@ include '../../includes/sidebar.php';
 
 <?php
 include '../../includes/script.php';
+?>
+<script>
+    function updateData() {
+        var Id = $("#Id").val();
+        var Name = $("#Name").val();
+        var Phone = $("#Phone").val();
+        var Email = $("#Email").val();
+        var Address = $("#Address").val();
+
+        $.ajax({
+            url: "../../api/client/update.php",
+            method: "POST",
+            data: {
+                Id: Id,
+                Name: Name,
+                Phone: Phone,
+                Email: Email,
+                Address: Address
+            },
+            success: function (response) {
+                alert("Client Updated");
+                window.location.href = './index.php';
+            }
+        })
+    }
+</script>
+<?php
 include '../../includes/pageend.php';
 ?>
