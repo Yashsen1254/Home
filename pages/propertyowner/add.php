@@ -512,15 +512,23 @@ require '../../includes/sidebar.php';
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Name" />
+                                    <input type="text" class="form-control" placeholder="Name" id="Name"/>
                                 </div>
                             </div>
                         </div>
-                        <h2 class="card-inside-title">Number</h2>
+                        <h2 class="card-inside-title">Phone</h2>
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="number" class="form-control" placeholder="Number" />
+                                    <input type="number" class="form-control" placeholder="Number" id="Phone"/>
+                                </div>
+                            </div>
+                        </div>
+                        <h2 class="card-inside-title">Email</h2>
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="email" class="form-control" placeholder="Number" id="Email"/>
                                 </div>
                             </div>
                         </div>
@@ -531,7 +539,7 @@ require '../../includes/sidebar.php';
         <!-- #END# Input -->
 
         <div class="col-sm-12">
-            <button type="submit" class="btn btn-primary btn-round">Add</button>
+            <button type="submit" onclick="sendData()" class="btn btn-primary btn-round">Add</button>
             <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
         </div>
     </div>
@@ -539,5 +547,28 @@ require '../../includes/sidebar.php';
 
 <?php
 include '../../includes/script.php';
+?>
+<script>
+    function sendData() {
+        var Name = $("#Name").val();
+        var Phone = $("#Phone").val();
+        var Email = $("#Email").val();
+
+        $.ajax({
+            url: "../../api/propertyowner/add.php",
+            method: "POST",
+            data: {
+                Name: Name,
+                Phone: Phone,
+                Email: Email
+            },
+            success: function (response) {
+                alert("PropertyOwner Added");
+                window.location.href = './index.php';
+            }
+        })
+    }
+</script>
+<?php
 include '../../includes/pageend.php';
 ?>

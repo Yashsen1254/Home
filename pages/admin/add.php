@@ -506,9 +506,8 @@ require '../../includes/sidebar.php';
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
-
                     <div class="body">
-                        <h2 class="card-inside-title">Name</h2>
+                        <h2 class="card-inside-title">UserName</h2>
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
@@ -524,28 +523,32 @@ require '../../includes/sidebar.php';
                                 </div>
                             </div>
                         </div>
-                        <h2 class="card-inside-title">Address</h2>
-                        <div class="row clearfix">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Address" />
-                                </div>
-                            </div>
-                        </div>
                         <h2 class="card-inside-title">Password</h2>
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="Password" />
+                                    <input type="password" class="form-control" placeholder="Address" />
                                 </div>
                             </div>
                         </div>
-                        <h2 class="card-inside-title">Number</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="header">
+                        <h2> <strong>Select Role</strong> </h2>
+                    </div>
+                    <div class="body">
                         <div class="row clearfix">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <input type="number" class="form-control" placeholder="Number" />
-                                </div>
+                            <div class="col-sm-6">
+                                <select class="form-control show-tick">
+                                    <option value="">-- Please select --</option>
+                                    <option value="40">40</option>
+                                    <option value="50">50</option>
+                                </select>
                             </div>
                         </div>
                     </div>

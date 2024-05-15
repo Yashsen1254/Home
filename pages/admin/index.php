@@ -29,7 +29,7 @@ include '../../includes/sidebar.php';
             <div class="col-lg-12">
                 <div class="card">
                     <div class="header">
-                        <h2><strong>Basic</strong> Examples </h2>
+                        <a href="./add.php" class="btn btn-success mb-2 me-2">Add</a>
                         <ul class="header-dropdown">
                             <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle"
                                     data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i
@@ -50,12 +50,12 @@ include '../../includes/sidebar.php';
                             <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
+                                        <th>Role</th>
+                                        <th>UserName</th>
+                                        <th>Email</th>
+                                        <th>Passowrd</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -64,18 +64,30 @@ include '../../includes/sidebar.php';
                                         <td>System Architect</td>
                                         <td>Edinburgh</td>
                                         <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
+                                        <form action="./update.php" method="post">
+                                            <td>
+                                                <input type="hidden" name="Id" id="Id"">
+                                                <button type="submit" class="btn btn-primary btn-circle mb-2">
+                                                    
+                                                </button>
+                                            </td>
+                                        </form>
+                                        <td>
+                                            <button type="submit" class="btn btn-danger btn-circle mb-2"
+                                                onclick="">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
+                                        <th>Role</th>
+                                        <th>UserName</th>
+                                        <th>Email</th>
+                                        <th>Passowrd</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
                                     </tr>
                                 </tfoot>
                             </table>
