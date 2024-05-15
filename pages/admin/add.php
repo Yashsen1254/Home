@@ -3,6 +3,7 @@ require '../../includes/init.php';
 require '../../includes/header.php';
 require '../../includes/navbar.php';
 require '../../includes/sidebar.php';
+$roles = select("SELECT * FROM role");
 ?>
 
 <aside id="rightsidebar" class="right-sidebar">
@@ -511,7 +512,7 @@ require '../../includes/sidebar.php';
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Name" />
+                                    <input type="text" class="form-control" placeholder="Name" id="Username" />
                                 </div>
                             </div>
                         </div>
@@ -519,7 +520,7 @@ require '../../includes/sidebar.php';
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="Email" />
+                                    <input type="email" class="form-control" placeholder="Email" id="Email" />
                                 </div>
                             </div>
                         </div>
@@ -527,7 +528,7 @@ require '../../includes/sidebar.php';
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="Address" />
+                                    <input type="password" class="form-control" placeholder="Passowrd" id="Password" />
                                 </div>
                             </div>
                         </div>
@@ -544,10 +545,11 @@ require '../../includes/sidebar.php';
                     <div class="body">
                         <div class="row clearfix">
                             <div class="col-sm-6">
-                                <select class="form-control show-tick">
-                                    <option value="">-- Please select --</option>
-                                    <option value="40">40</option>
-                                    <option value="50">50</option>
+                                <select class="form-control show-tick" id="RoleId">
+                                    <?php foreach ($roles as $role): ?>
+                                        <option value="<?= $role['Id'] ?>"><?= $role['Name'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -558,7 +560,7 @@ require '../../includes/sidebar.php';
         <!-- #END# Input -->
 
         <div class="col-sm-12">
-            <button type="submit" class="btn btn-primary btn-round">Add</button>
+            <button type="submit" onclick="sendData()" class="btn btn-primary btn-round">Add</button>
             <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
         </div>
     </div>
@@ -566,5 +568,30 @@ require '../../includes/sidebar.php';
 
 <?php
 include '../../includes/script.php';
+?>
+<script>
+    function sendData() {
+        var Username = $('#Username').val();
+        var Email = $('#Email').val();
+        var Password = $('#Password').val();
+        var RoleId = $('#RoleId').val();
+
+        $.ajax({
+            url: "../../api/admin/add.php",
+            method: "POST",
+            data: {
+                Username: Username,
+                Email: Email,
+                Password: Password,
+                RoleId: RoleId
+            },
+            success: function (response) {
+                alert("Admin Added");
+                window.location.href = './index.php';
+            }
+        })
+    }
+</script>
+<?php
 include '../../includes/pageend.php';
 ?>

@@ -3,6 +3,9 @@ require '../../includes/init.php';
 require '../../includes/header.php';
 require '../../includes/navbar.php';
 require '../../includes/sidebar.php';
+$Id = $_POST['Id'];
+$admins = selectOne("SELECT * FROM admin WHERE Id = $Id");
+$roles = select("SELECT * FROM role");
 ?>
 
 <aside id="rightsidebar" class="right-sidebar">
@@ -507,11 +510,12 @@ require '../../includes/sidebar.php';
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="body">
+                    <input type="hidden" class="form-control" value="<?= $admins['Id'] ?>" id="Id"/>
                         <h2 class="card-inside-title">UserName</h2>
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Name" />
+                                    <input type="text" class="form-control" placeholder="Name" id="Username"/>
                                 </div>
                             </div>
                         </div>
@@ -519,7 +523,7 @@ require '../../includes/sidebar.php';
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="Email" />
+                                    <input type="email" class="form-control" placeholder="Email" id="Email"/>
                                 </div>
                             </div>
                         </div>
@@ -527,7 +531,7 @@ require '../../includes/sidebar.php';
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="password" class="form-control" placeholder="Address" />
+                                    <input type="password" class="form-control" placeholder="Password" id="Password"/>
                                 </div>
                             </div>
                         </div>
@@ -544,10 +548,11 @@ require '../../includes/sidebar.php';
                     <div class="body">
                         <div class="row clearfix">
                             <div class="col-sm-6">
-                                <select class="form-control show-tick">
-                                    <option value="">-- Please select --</option>
-                                    <option value="40">40</option>
-                                    <option value="50">50</option>
+                                <select class="form-control show-tick" id="RoleId">
+                                    <?php foreach ($roles as $role): ?>
+                                        <option value="<?= $role['Id'] ?>"><?= $role['Name'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -558,7 +563,7 @@ require '../../includes/sidebar.php';
         <!-- #END# Input -->
 
         <div class="col-sm-12">
-            <button type="submit" class="btn btn-primary btn-round">Add</button>
+            <button type="submit" onclick="updateData()" class="btn btn-primary btn-round">Add</button>
             <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
         </div>
     </div>
@@ -566,5 +571,32 @@ require '../../includes/sidebar.php';
 
 <?php
 include '../../includes/script.php';
+?>
+<script>
+    function updateData() {
+        var Id = $("#Id").val();
+        var Username = $("#Username").val();
+        var Password = $("#Password").val();
+        var Email = $("#Email").val();
+        var RoleId = $("#RoleId").val();
+
+        $.ajax({
+            url: "../../api/admin/update.php",
+            method: "POST",
+            data: {
+                Id: Id,
+                Username: Username,
+                Password: Password,
+                Email: Email,
+                RoleId: RoleId
+            },
+            success: function (response) {
+                alert("Admin Updated");
+                window.location.href = './index.php';
+            }
+        })
+    }
+</script>
+<?php
 include '../../includes/pageend.php';
 ?>

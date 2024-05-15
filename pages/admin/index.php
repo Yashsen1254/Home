@@ -3,6 +3,8 @@ require '../../includes/init.php';
 include '../../includes/header.php';
 include '../../includes/navbar.php';
 include '../../includes/sidebar.php';
+$index = 0;
+$admins = select("SELECT Admin.Id, Admin.Username, Admin.Password, Admin.Email, Role.Name AS 'RoleName' FROM Role INNER JOIN Admin ON Admin.RoleId = Role.Id");
 ?>
 
 
@@ -50,6 +52,7 @@ include '../../includes/sidebar.php';
                             <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                 <thead>
                                     <tr>
+                                        <th>Sr No</th>
                                         <th>Role</th>
                                         <th>UserName</th>
                                         <th>Email</th>
@@ -59,29 +62,31 @@ include '../../includes/sidebar.php';
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <form action="./update.php" method="post">
+                                    <?php foreach ($admins as $admin): ?>
+                                        <tr>
+                                            <td><?= $index += 1 ?></td>
+                                            <td><?= $admin['Username'] ?></td>
+                                            <td><?= $admin['RoleName'] ?></td>
+                                            <td><?= $admin['Email'] ?></td>
+                                            <td><?= $admin['Password'] ?></td>
+                                            <form action="./update.php" method="post">
+                                                <td>
+                                                    <input type="hidden" name="Id" id="Id" value="<?= $admin['Id'] ?>">
+                                                    <button type="submit" class="btn btn-primary btn-circle mb-2">
+                                                    </button>
+                                                </td>
+                                            </form>
                                             <td>
-                                                <input type="hidden" name="Id" id="Id"">
-                                                <button type="submit" class="btn btn-primary btn-circle mb-2">
-                                                    
+                                                <button type="submit" class="btn btn-danger btn-circle mb-2"
+                                                    onclick="deleteAdmin(<?= $admin['Id'] ?>)">
                                                 </button>
                                             </td>
-                                        </form>
-                                        <td>
-                                            <button type="submit" class="btn btn-danger btn-circle mb-2"
-                                                onclick="">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                        </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>
                                     <tr>
+                                        <th>Sr No</th>
                                         <th>Role</th>
                                         <th>UserName</th>
                                         <th>Email</th>
@@ -101,5 +106,22 @@ include '../../includes/sidebar.php';
 
 <?php
 include '../../includes/script.php';
+?>
+<script>
+    function deleteAdmin(Id) {
+        if (confirm("sure you want to delete this Admin"));
+        $.ajax({
+            url: "../../api/admin/delete.php",
+            method: "POST",
+            data: {
+                Id: Id
+            },
+            success: function (response) {
+                alert('Admin Deleted');
+            }
+        })
+    }
+</script>
+<?php
 include '../../includes/pageend.php';
 ?>
