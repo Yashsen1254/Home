@@ -508,11 +508,11 @@ require '../../includes/sidebar.php';
                 <div class="card">
 
                     <div class="body">
-                        <h2 class="card-inside-title">State Name</h2>
+                        <h2 class="card-inside-title">Name</h2>
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="State Name" />
+                                    <input type="text" class="form-control" id="Name" placeholder="Name" />
                                 </div>
                             </div>
                         </div>
@@ -523,13 +523,31 @@ require '../../includes/sidebar.php';
         <!-- #END# Input -->
 
         <div class="col-sm-12">
-            <button type="submit" class="btn btn-primary btn-round">Add</button>
-            <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
+        <button class="btn btn-success mb-2 me-2" onclick="sendData()">Add</button>
         </div>
     </div>
 </section>
 
 <?php
 include '../../includes/script.php';
+?>
+<script>
+    function sendData() {
+        var Name = $("#Name").val();
+
+        $.ajax({
+            url: "../../api/state/add.php",
+            method: "POST",
+            data: {
+                Name: Name,
+            },
+            success: function (response) {
+                alert("Role Added");
+                window.location.href = './index.php';
+            }
+        })
+    }
+</script>
+<?php
 include '../../includes/pageend.php';
 ?>
