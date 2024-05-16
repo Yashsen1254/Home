@@ -3,6 +3,11 @@ require '../../includes/init.php';
 require '../../includes/header.php';
 require '../../includes/navbar.php';
 require '../../includes/sidebar.php';
+$clients = select("SELECT * FROM client");
+$propertyOwners = select("SELECT * FROM propertyowner");
+$agents = select("SELECT * FROM agent");
+$Id = $_POST['Id'];
+$contacts = selectOne("SELECT * FROM contact WHERE Id = $Id");
 ?>
 
 <aside id="rightsidebar" class="right-sidebar">
@@ -508,19 +513,20 @@ require '../../includes/sidebar.php';
                 <div class="card">
 
                     <div class="body">
+                    <input type="hidden" value="<?= $contacts['Id'] ?>" id="Id"/>
+                        <h2 class="card-inside-title">Phone</h2>
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="number" class="form-control" placeholder="Phone" id="Phone"/>
+                                </div>
+                            </div>
+                        </div>
                         <h2 class="card-inside-title">Email</h2>
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="1 To 5" />
-                                </div>
-                            </div>
-                        </div>
-                        <h2 class="card-inside-title">Number</h2>
-                        <div class="row clearfix">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <input type="number" class="form-control" placeholder="Date" />
+                                    <input type="email" class="form-control" placeholder="Email" id="Email"/>
                                 </div>
                             </div>
                         </div>
@@ -540,13 +546,11 @@ require '../../includes/sidebar.php';
                     <div class="body">
                         <div class="row clearfix">
                             <div class="col-sm-6">
-                                <select class="form-control show-tick">
-                                    <option value="">-- Please select --</option>
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="30">30</option>
-                                    <option value="40">40</option>
-                                    <option value="50">50</option>
+                                <select class="form-control show-tick" id="ClientId">
+                                    <?php foreach ($clients as $client): ?>
+                                        <option value="<?= $client['Id'] ?>"><?= $client['Name'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -564,13 +568,32 @@ require '../../includes/sidebar.php';
                     <div class="body">
                         <div class="row clearfix">
                             <div class="col-sm-6">
-                                <select class="form-control show-tick">
-                                    <option value="">-- Please select --</option>
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="30">30</option>
-                                    <option value="40">40</option>
-                                    <option value="50">50</option>
+                                <select class="form-control show-tick" id="PropertyOwnerId">
+                                    <?php foreach ($propertyOwners as $propertyOwner): ?>
+                                        <option value="<?= $propertyOwner['Id'] ?>"><?= $propertyOwner['Name'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="header">
+                        <h2> <strong>Select Agent</strong> </h2>
+                    </div>
+                    <div class="body">
+                        <div class="row clearfix">
+                            <div class="col-sm-6">
+                                <select class="form-control show-tick" id="AgentId">
+                                    <?php foreach ($agents as $agent): ?>
+                                        <option value="<?= $agent['Id'] ?>"><?= $agent['Name'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -579,7 +602,7 @@ require '../../includes/sidebar.php';
             </div>
         </div>
         <div class="col-sm-12">
-            <button type="submit" class="btn btn-primary btn-round">Add</button>
+            <button type="submit" onclick="sendData()" class="btn btn-primary btn-round">Add</button>
             <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
         </div>
     </div>
@@ -587,5 +610,34 @@ require '../../includes/sidebar.php';
 
 <?php
 include '../../includes/script.php';
+?>
+<script>
+    function sendData() {
+        var Id = $("#Id").val();
+        var Phone = $("#Phone").val();
+        var Email = $("#Email").val();
+        var ClientId = $("#ClientId").val();
+        var PropertyOwnerId = $("#PropertyOwnerId").val();
+        var AgentId = $("#AgentId").val();
+
+        $.ajax({
+            url: "../../api/contact/update.php",
+            method: "POST",
+            data: {
+                Id: Id,
+                Phone: Phone,
+                Email: Email,
+                ClientId: ClientId,
+                PropertyOwnerId: PropertyOwnerId,
+                AgentId: AgentId,
+            },
+            success: function (response) {
+                alert("Contact Added");
+                window.location.href = './index.php';
+            }
+        })
+    }
+</script>
+<?php
 include '../../includes/pageend.php';
 ?>

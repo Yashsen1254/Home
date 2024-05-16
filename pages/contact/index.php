@@ -3,6 +3,8 @@ require '../../includes/init.php';
 include '../../includes/header.php';
 include '../../includes/navbar.php';
 include '../../includes/sidebar.php';
+$index = 0;
+$contacts = select("SELECT Contact.Id, Contact.Phone, Contact.Email, Client.Name AS 'ClientName', Propertyowner.Name AS 'PropertyOwnerName', Agent.Name AS 'AgentName' FROM Contact INNER JOIN Client ON Contact.ClientId = Client.Id INNER JOIN PropertyOwner ON Contact.PropertyOwnerId = PropertyOwner.Id INNER JOIN Agent ON Contact.AgentId = Agent.Id");
 ?>
 
 
@@ -29,7 +31,7 @@ include '../../includes/sidebar.php';
             <div class="col-lg-12">
                 <div class="card">
                     <div class="header">
-                        <h2><strong>Basic</strong> Examples </h2>
+                        <a href="./add.php" class="btn btn-success mb-2 me-2">Add</a>
                         <ul class="header-dropdown">
                             <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle"
                                     data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i
@@ -50,32 +52,50 @@ include '../../includes/sidebar.php';
                             <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
+                                        <th>Sr No</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Client</th>
+                                        <th>PropertyOwner</th>
+                                        <th>Agent</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                    </tr>
+                                <?php foreach ($contacts as $contact): ?>
+                                        <tr>
+                                            <td><?= $index += 1 ?></td>
+                                            <td><?= $contact['Phone'] ?></td>
+                                            <td><?= $contact['Email'] ?></td>
+                                            <td><?= $contact['ClientName'] ?></td>
+                                            <td><?= $contact['PropertyOwnerName'] ?></td>
+                                            <td><?= $contact['AgentName'] ?></td>
+                                            <form action="./update.php" method="post">
+                                                <td>
+                                                    <input type="hidden" name="Id" id="Id" value="<?= $contact['Id'] ?>">
+                                                    <button type="submit" class="btn btn-primary btn-circle mb-2">
+                                                    </button>
+                                                </td>
+                                            </form>
+                                            <td>
+                                                <button type="submit" class="btn btn-danger btn-circle mb-2"
+                                                    onclick="deleteContact(<?= $contact['Id'] ?>)">
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
+                                        <th>Sr No</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Client</th>
+                                        <th>PropertyOwner</th>
+                                        <th>Agent</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -89,5 +109,22 @@ include '../../includes/sidebar.php';
 
 <?php
 include '../../includes/script.php';
+?>
+<script>
+    function deleteContact(Id) {
+        if (confirm("sure you want to delete this Agent"));
+        $.ajax({
+            url: "../../api/contact/delete.php",
+            method: "POST",
+            data: {
+                Id: Id
+            },
+            success: function (response) {
+                alert('Agent Deleted');
+            }
+        })
+    }
+</script>
+<?php
 include '../../includes/pageend.php';
 ?>
