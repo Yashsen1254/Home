@@ -3,6 +3,11 @@ require '../../includes/init.php';
 require '../../includes/header.php';
 require '../../includes/navbar.php';
 require '../../includes/sidebar.php';
+$clients = select("SELECT * FROM client");
+$propertys = select("SELECT * FROM property");
+$agents = select("SELECT * FROM agent");
+$Id = $_POST['Id'];
+$appointments = selectOne("SELECT * FROM appointment WHERE Id = $Id");
 ?>
 
 <aside id="rightsidebar" class="right-sidebar">
@@ -488,7 +493,7 @@ require '../../includes/sidebar.php';
     <div class="block-header">
         <div class="row">
             <div class="col-lg-7 col-md-6 col-sm-12">
-                <h2>Update Appointment
+                <h2>Add Appointment
                     <small>Welcome to Oreo</small>
                 </h2>
             </div>
@@ -508,11 +513,12 @@ require '../../includes/sidebar.php';
                 <div class="card">
 
                     <div class="body">
+                    <input type="hidden" value="<?= $appointments['Id'] ?>" id="Id" />
                         <h2 class="card-inside-title">Date</h2>
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="date" class="form-control" placeholder="1 To 5" />
+                                    <input type="date" class="form-control" placeholder="1 To 5" id="Date" />
                                 </div>
                             </div>
                         </div>
@@ -520,7 +526,7 @@ require '../../includes/sidebar.php';
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Date" />
+                                    <input type="text" class="form-control" placeholder="Date" id="Time" />
                                 </div>
                             </div>
                         </div>
@@ -540,13 +546,11 @@ require '../../includes/sidebar.php';
                     <div class="body">
                         <div class="row clearfix">
                             <div class="col-sm-6">
-                                <select class="form-control show-tick">
-                                    <option value="">-- Please select --</option>
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="30">30</option>
-                                    <option value="40">40</option>
-                                    <option value="50">50</option>
+                                <select class="form-control show-tick" id="ClientId">
+                                    <?php foreach ($clients as $client): ?>
+                                        <option value="<?= $client['Id'] ?>"><?= $client['Name'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -564,13 +568,11 @@ require '../../includes/sidebar.php';
                     <div class="body">
                         <div class="row clearfix">
                             <div class="col-sm-6">
-                                <select class="form-control show-tick">
-                                    <option value="">-- Please select --</option>
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="30">30</option>
-                                    <option value="40">40</option>
-                                    <option value="50">50</option>
+                                <select class="form-control show-tick" id="PropertyId">
+                                    <?php foreach ($propertys as $property): ?>
+                                        <option value="<?= $property['Id'] ?>"><?= $property['Name'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -578,7 +580,7 @@ require '../../includes/sidebar.php';
                 </div>
             </div>
         </div>
-        
+
         <!-- #END# Select -->
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -589,13 +591,11 @@ require '../../includes/sidebar.php';
                     <div class="body">
                         <div class="row clearfix">
                             <div class="col-sm-6">
-                                <select class="form-control show-tick">
-                                    <option value="">-- Please select --</option>
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="30">30</option>
-                                    <option value="40">40</option>
-                                    <option value="50">50</option>
+                                <select class="form-control show-tick" id="AgentId">
+                                    <?php foreach ($agents as $agent): ?>
+                                        <option value="<?= $agent['Id'] ?>"><?= $agent['Name'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -604,7 +604,7 @@ require '../../includes/sidebar.php';
             </div>
         </div>
         <div class="col-sm-12">
-            <button type="submit" class="btn btn-primary btn-round">Add</button>
+            <button type="submit" class="btn btn-primary btn-round" onclick="sendData()">Add</button>
             <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
         </div>
     </div>
@@ -612,5 +612,34 @@ require '../../includes/sidebar.php';
 
 <?php
 include '../../includes/script.php';
+?>
+<script>
+    function sendData() {
+        var Id = $("#Id").val();
+        var Date = $("#Date").val();
+        var Time = $("#Time").val();
+        var ClientId = $("#ClientId").val();
+        var PropertyId = $("#PropertyId").val();
+        var AgentId = $("#AgentId").val();
+
+        $.ajax({
+            url: "../../api/appointment/update.php",
+            method: "POST",
+            data: {
+                Id: Id,
+                Date: Date,
+                Time: Time,
+                ClientId: ClientId,
+                PropertyId: PropertyId,
+                AgentId: AgentId,
+            },
+            success: function (response) {
+                alert("Contact Added");
+                window.location.href = './index.php';
+            }
+        })
+    }
+</script>
+<?php
 include '../../includes/pageend.php';
 ?>
