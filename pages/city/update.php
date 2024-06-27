@@ -5,7 +5,8 @@ require '../../includes/navbar.php';
 require '../../includes/sidebar.php';
 $states = select("SELECT * FROM state");
 $branchs = select("SELECT * FROM branch");
-$citys = select("SELECT * FROM city");
+$Id = $_POST['Id'];
+$citys = selectOne("SELECT * FROM city WHERE Id = $Id");
 ?>
 
 <aside id="rightsidebar" class="right-sidebar">
@@ -491,7 +492,7 @@ $citys = select("SELECT * FROM city");
     <div class="block-header">
         <div class="row">
             <div class="col-lg-7 col-md-6 col-sm-12">
-                <h2>Add Appointment
+                <h2>Add City
                     <small>Welcome to Oreo</small>
                 </h2>
             </div>
@@ -505,17 +506,17 @@ $citys = select("SELECT * FROM city");
         </div>
     </div>
     <div class="container-fluid">
+    <input type="type" class="form-control" id="Id" value="<?= $citys['Id'] ?>" />
         <!-- Input -->
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
-
                     <div class="body">
                         <h2 class="card-inside-title">Name</h2>
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="type" class="form-control" placeholder="1 To 5" id="Date" />
+                                    <input type="type" class="form-control" placeholder="Name" id="Name" />
                                 </div>
                             </div>
                         </div>
@@ -525,18 +526,19 @@ $citys = select("SELECT * FROM city");
         </div>
         <!-- #END# Input -->
 
+        <!-- Select -->
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="header">
-                        <h2> <strong>Select Branch</strong> </h2>
+                        <h2> <strong>Select State</strong> </h2>
                     </div>
                     <div class="body">
                         <div class="row clearfix">
                             <div class="col-sm-6">
-                                <select class="form-control show-tick" id="BranchId">
-                                    <?php foreach ($branchs as $branch): ?>
-                                        <option value="<?= $branch['Id'] ?>"><?= $branch['Name'] ?>
+                                <select class="form-control show-tick" id="StateId">
+                                    <?php foreach ($states as $state): ?>
+                                        <option value="<?= $state['Id'] ?>"><?= $state['Name'] ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
@@ -570,7 +572,7 @@ $citys = select("SELECT * FROM city");
         </div>
 
         <div class="col-sm-12">
-            <button type="submit" class="btn btn-primary btn-round" onclick="sendata()">Add</button>
+            <button type="submit" class="btn btn-primary btn-round" onclick="sendData()">Add</button>
             <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
         </div>
     </div>
@@ -590,6 +592,7 @@ include '../../includes/script.php';
             url: "../../api/city/update.php",
             method: "POST",
             data: {
+                Id: Id,
                 Name: Name,
                 StateId: StateId,
                 BranchId: BranchId,

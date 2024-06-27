@@ -65,8 +65,8 @@ $city = select("SELECT City.Id, City.Name, State.Name AS 'StateName', Branch.Nam
                                         <tr>
                                             <td><?= $index += 1 ?></td>
                                             <td><?= $city['Name'] ?></td>
-                                            <td><?= $city['Address'] ?></td>
                                             <td><?= $city['StateName'] ?></td>
+                                            <td><?= $city['BranchName'] ?></td>
                                             <form action="./update.php" method="post">
                                                 <td>
                                                     <input type="hidden" name="Id" id="Id" value="<?= $city['Id'] ?>">
