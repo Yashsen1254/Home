@@ -3,6 +3,8 @@ require '../../includes/init.php';
 include '../../includes/header.php';
 include '../../includes/navbar.php';
 include '../../includes/sidebar.php';
+$index = 0;
+$city = select("SELECT City.Id, City.Name, State.Name AS 'StateName', Branch.Name AS 'BranchName'FROM City INNER JOIN State ON City.StateId = State.Id INNER JOIN Branch ON City.BranchId = Branch.Id");
 ?>
 
 
@@ -29,7 +31,7 @@ include '../../includes/sidebar.php';
             <div class="col-lg-12">
                 <div class="card">
                     <div class="header">
-                        <h2><strong>Basic</strong> Examples </h2>
+                        <a href="./add.php" class="btn btn-success mb-2 me-2">Add</a>
                         <ul class="header-dropdown">
                             <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle"
                                     data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i
@@ -50,33 +52,45 @@ include '../../includes/sidebar.php';
                             <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                 <thead>
                                     <tr>
+                                        <th>Sr No</th>
                                         <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
+                                        <th>State</th>
+                                        <th>Branch</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                    </tr>
+                                    <?php foreach ($city as $city): ?>
+                                        <tr>
+                                            <td><?= $index += 1 ?></td>
+                                            <td><?= $city['Name'] ?></td>
+                                            <td><?= $city['Address'] ?></td>
+                                            <td><?= $city['StateName'] ?></td>
+                                            <form action="./update.php" method="post">
+                                                <td>
+                                                    <input type="hidden" name="Id" id="Id" value="<?= $city['Id'] ?>">
+                                                    <button type="submit" class="btn btn-primary btn-circle mb-2">
+                                                    </button>
+                                                </td>
+                                            </form>
+                                            <td>
+                                                <button type="submit" class="btn btn-danger btn-circle mb-2"
+                                                    onclick="deleteBranch(<?= $city['Id'] ?>)">
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
-                                    </tr>
+                                <tr>
+                                    <th>Sr No</th>
+                                    <th>Name</th>
+                                    <th>State</th>
+                                    <th>Branch</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
                                 </tfoot>
                             </table>
                         </div>
@@ -89,5 +103,22 @@ include '../../includes/sidebar.php';
 
 <?php
 include '../../includes/script.php';
+?>
+<script>
+    function deleteBranch(Id) {
+        if (confirm("sure you want to delete this Agent"));
+        $.ajax({
+            url: "../../api/branch/delete.php",
+            method: "POST",
+            data: {
+                Id: Id
+            },
+            success: function (response) {
+                alert('Agent Deleted');
+            }
+        })
+    }
+</script>
+<?php
 include '../../includes/pageend.php';
 ?>

@@ -3,6 +3,9 @@ require '../../includes/init.php';
 require '../../includes/header.php';
 require '../../includes/navbar.php';
 require '../../includes/sidebar.php';
+$states = select("SELECT * FROM state");
+$branchs = select("SELECT * FROM branch");
+$citys = select("SELECT * FROM city");
 ?>
 
 <aside id="rightsidebar" class="right-sidebar">
@@ -488,7 +491,7 @@ require '../../includes/sidebar.php';
     <div class="block-header">
         <div class="row">
             <div class="col-lg-7 col-md-6 col-sm-12">
-                <h2>Update City
+                <h2>Add Appointment
                     <small>Welcome to Oreo</small>
                 </h2>
             </div>
@@ -508,11 +511,11 @@ require '../../includes/sidebar.php';
                 <div class="card">
 
                     <div class="body">
-                        <h2 class="card-inside-title">City Name</h2>
+                        <h2 class="card-inside-title">Name</h2>
                         <div class="row clearfix">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="City Name" />
+                                    <input type="type" class="form-control" placeholder="1 To 5" id="Date" />
                                 </div>
                             </div>
                         </div>
@@ -522,23 +525,20 @@ require '../../includes/sidebar.php';
         </div>
         <!-- #END# Input -->
 
-        <!-- Select -->
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="header">
-                        <h2> <strong>Select State</strong> </h2>
+                        <h2> <strong>Select Branch</strong> </h2>
                     </div>
                     <div class="body">
                         <div class="row clearfix">
                             <div class="col-sm-6">
-                                <select class="form-control show-tick">
-                                    <option value="">-- Please select --</option>
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="30">30</option>
-                                    <option value="40">40</option>
-                                    <option value="50">50</option>
+                                <select class="form-control show-tick" id="BranchId">
+                                    <?php foreach ($branchs as $branch): ?>
+                                        <option value="<?= $branch['Id'] ?>"><?= $branch['Name'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -556,13 +556,11 @@ require '../../includes/sidebar.php';
                     <div class="body">
                         <div class="row clearfix">
                             <div class="col-sm-6">
-                                <select class="form-control show-tick">
-                                    <option value="">-- Please select --</option>
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="30">30</option>
-                                    <option value="40">40</option>
-                                    <option value="50">50</option>
+                                <select class="form-control show-tick" id="BranchId">
+                                    <?php foreach ($branchs as $branch): ?>
+                                        <option value="<?= $branch['Id'] ?>"><?= $branch['Name'] ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -570,8 +568,9 @@ require '../../includes/sidebar.php';
                 </div>
             </div>
         </div>
+
         <div class="col-sm-12">
-            <button type="submit" class="btn btn-primary btn-round">Update</button>
+            <button type="submit" class="btn btn-primary btn-round" onclick="sendata()">Add</button>
             <button type="submit" class="btn btn-default btn-round btn-simple">Cancel</button>
         </div>
     </div>
@@ -579,5 +578,29 @@ require '../../includes/sidebar.php';
 
 <?php
 include '../../includes/script.php';
+?>
+<script>
+    function sendData() {
+        var Id = $("#Id").val();
+        var Name = $("#Name").val();
+        var StateId = $("#StateId").val();
+        var BranchId = $("#BranchId").val();
+
+        $.ajax({
+            url: "../../api/city/update.php",
+            method: "POST",
+            data: {
+                Name: Name,
+                StateId: StateId,
+                BranchId: BranchId,
+            },
+            success: function (response) {
+                alert("Contact Added");
+                window.location.href = './index.php';
+            }
+        })
+    }
+</script>
+<?php
 include '../../includes/pageend.php';
 ?>
